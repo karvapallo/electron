@@ -2,6 +2,8 @@
 
 > 네이티브 애플리케이션 메뉴와 컨텍스트 메뉴를 생성합니다.
 
+프로세스: [메인](../tutorial/quick-start.md#main-process)
+
 각 메뉴는 여러 개의 [메뉴 아이템](menu-item.md)으로 구성되고 서브 메뉴를 가질 수도 있습니다.
 
 ## 예시
@@ -14,7 +16,7 @@
 다음은 템플릿 API를 사용하여 메인 프로세스에서 어플리케이션 메뉴를 생성하는 예시입니다:
 
 ```javascript
-const {Menu} = require('electron')
+const {app, Menu} = require('electron')
 
 const template = [
   {
@@ -102,16 +104,15 @@ const template = [
     submenu: [
       {
         label: 'Learn More',
-        click () { require('electron').shell.openExternal('http://electron.atom.io') }
+        click () { require('electron').shell.openExternal('https://electron.atom.io') }
       }
     ]
   }
 ]
 
 if (process.platform === 'darwin') {
-  const name = require('electron').remote.app.getName()
   template.unshift({
-    label: name,
+    label: app.getName(),
     submenu: [
       {
         role: 'about'
@@ -320,7 +321,8 @@ macOS는 몇가지 메뉴 아이템에 대해 `About xxx`, `Hide xxx`, `Hide Oth
 
 macOS에선 지정한 애플리케이션 메뉴에 상관없이 메뉴의 첫번째 라벨은 언제나 애플리케이션의
 이름이 됩니다. 애플리케이션 이름을 변경하려면 앱 번들내의 `Info.plist` 파일을 수정해야
-합니다. 자세한 내용은 [About Information Property List Files][AboutInformationPropertyListFiles] 문서를 참고하세요.
+합니다. 자세한 내용은 [About Information Property List Files][AboutInformationPropertyListFiles]
+문서를 참고하세요.
 
 ## 지정한 브라우저 윈도우에 메뉴 설정 (*Linux* *Windows*)
 

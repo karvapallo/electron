@@ -33,7 +33,7 @@ After finishing the preparation work, you can package your app by following
 signing your app.
 
 First, you have to add a `ElectronTeamID` key to your app's `Info.plist`, which
-has your Team ID as key:
+has your Team ID as value:
 
 ```xml
 <plist version="1.0">
@@ -135,8 +135,9 @@ electron-osx-sign YourApp.app YourApp.app/Contents/Resources/app/node_modules/na
 
 Also note that native modules may have intermediate files produced which should
 not be included (as they would also need to be signed). If you use
-[electron-packager][electron-packager], add `--ignore=.+\.o$` to build step to
-ignore these files.
+[electron-packager][electron-packager] before version 8.1.0, add
+`--ignore=.+\.o$` to your build step to ignore these files. Versions 8.1.0 and
+later ignores those files by default.
 
 ### Upload Your App
 
@@ -213,6 +214,17 @@ more details.
 
 See the [Enabling User-Selected File Access documentation][user-selected] for
 more details.
+
+## Known issues
+
+### `shell.openItem(filePath)` 
+
+This will fail when the app is signed for distribution in the Mac App Store.
+Subscribe to [#9005](https://github.com/electron/electron/issues/9005) for updates.
+
+#### Workaround
+
+`shell.openExternal('file://' + filePath)` will open the file in the default application as long as the extension is associated with an installed app.
 
 ## Cryptographic Algorithms Used by Electron
 

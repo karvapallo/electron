@@ -2,6 +2,8 @@
 
 > 애플리케이션의 이벤트 생명주기를 제어합니다.
 
+프로세스: [메인](../tutorial/quick-start.md#main-process)
+
 밑의 예시는 마지막 윈도우가 종료되었을 때, 애플리케이션을 종료시키는 예시입니다:
 
 ```javascript
@@ -185,15 +187,9 @@ Returns:
 * `webContents` [WebContents](web-contents.md)
 * `url` URL
 * `error` String - 에러 코드
-* `certificate` Object
-  * `data` String - PEM 인코딩된 데이터
-  * `issuerName` String - 인증서 발급자의 공통 이름
-  * `subjectName` String - 대상의 공통 이름
-  * `serialNumber` String - 문자열로 표현된 hex 값
-  * `validStart` Integer - 초 단위의 인증서가 유효하기 시작한 날짜
-  * `validExpiry` Integer - 초 단위의 인증서가 만료되는 날짜
-  * `fingerprint` String - 인증서의 지문
+* `certificate` [Certificate](structures/certificate.md)
 * `callback` Function
+  * `isTrusted` Boolean - 인증서를 신뢰할지 여부
 
 `url`에 대한 `certificate` 인증서의 유효성 검증에 실패했을 때 발생하는 이벤트입니다.
 인증서를 신뢰한다면 `event.preventDefault()` 와 `callback(true)`를 호출하여
@@ -220,15 +216,9 @@ Returns:
 * `event` Event
 * `webContents` [WebContents](web-contents.md)
 * `url` URL
-* `certificateList` [Objects]
-  * `data` String - PEM으로 인코딩된 데이터
-  * `issuerName` String - 인증서 발급자의 공통 이름
-  * `subjectName` String - 대상의 공통 이름
-  * `serialNumber` String - 문자열로 표현된 hex 값
-  * `validStart` Integer - 초 단위의 인증서가 유효하기 시작한 날짜
-  * `validExpiry` Integer - 초 단위의 인증서가 만료되는 날짜
-  * `fingerprint` String - 인증서의 지문
+* `certificateList` [Certificate[]](structures/certificate.md)
 * `callback` Function
+  * `certificate` [Certificate](structures/certificate.md)
 
 클라이언트 인증이 요청되었을 때 발생하는 이벤트입니다.
 
@@ -263,6 +253,8 @@ Returns:
   * `port` Integer
   * `realm` String
 * `callback` Function
+  * `username` String
+  * `password` String
 
 `webContents`가 기본 인증을 요청할 때 발생하는 이벤트입니다.
 
@@ -521,7 +513,7 @@ Returns `Boolean`
 
 ### `app.setUserTasks(tasks)` _Windows_
 
-* `tasks` Array - `Task` 객체의 배열
+* `tasks` [Task[]](structures/task.md) - `Task` 객체의 배열
 
 Windows에서 사용할 수 있는 JumpList의 [Tasks][tasks] 카테고리에 `task`를 추가합니다.
 
@@ -549,16 +541,17 @@ Returns `Boolean` - 호출 성공 여부.
 ### `app.getJumpListSettings()` _Windows_
 
 Returns `Object`:
+
 * `minItems` Integer - 점프 목록에서 보여질 항목의 최소 수 (이 값에 대한 자세한
   설명은 [MSDN 문서][JumpListBeginListMSDN])를 보세요.
-* `removedItems` Array - 점프 목록의 사용자 정의 카테고리에서 사용자가 삭제한
+* `removedItems` [JumpListItem[]](structures/jump-list-item.md) - 점프 목록의 사용자 정의 카테고리에서 사용자가 삭제한
   항목에 해당하는 `JumpListItem` 객체 배열. 이 항목들은 **다음**
   `app.setJumpList()` 호출로 다시 추가하면 안됩니다. 윈도우는 삭제된 항목을
   포함하는 카테고리를 표시하지 않을 것 입니다.
 
 ### `app.setJumpList(categories)` _Windows_
 
-* `categories` Array or `null` - `JumpListCategory` 객체의 배열.
+* `categories` [JumpListCategory[]](structures/jump-list-category.md) or `null` - `JumpListCategory` 객체의 배열.
 
 애플리케이션에 사용자 정의 점프 목록을 설정하거나 삭제하고 다음 문자열 중 하나를
 반환:
@@ -582,16 +575,16 @@ Returns `Object`:
   * `tasks` - 이 카테고리의 항목은 표준 `Tasks` 카테고리에 위치할 것 입니다.
     이 카테고리는 하나만 존재하며, 항상 점프 목록의 하단에 보여집니다.
   * `frequent` - 앱에 의해 자주 열린 파일의 목록을 보여줍니다. 카테고리의
-    이름과 항목들은 윈도우에 읳해 설정 됩니다.
+    이름과 항목들은 윈도우에 의해 설정 됩니다.
   * `recent` - 앱에 의해 최근에 열린 파일의 목록을 보여줍니다. 카테고리의
     이름과 항목들은 윈도우에 의해 설정 됩니다. `app.addRecentDocument(path)` 을
     사용하면 간접적으로 이 카테고리에 항목이 추가될 것 입니다.
   * `custom` - 작업 또는 파일 링크를 보여주며, 앱에 의해 `name` 설정되어야 합니다.
 * `name` String - `type` 이 `custom` 이면 꼭 설정되어야 하고, 그 외는 생략합니다.
-* `items` Array - `type` 이 `taks` 면 `JumpListItem` 객체의 배열, 그 외는
+* `items` Array - `type` 이 `tasks` 면 `JumpListItem` 객체의 배열, 그 외는
   생략합니다.
 
-**참고:** `JumpListCategory` 객체가 `type`, `name` 솏속성 둘 다 없다면 `type` 은
+**참고:** `JumpListCategory` 객체가 `type`, `name` 속성 둘 다 없다면 `type` 은
 `tasks` 로 가정합니다. `name` 속성이 설정되었지만 `type` 속성이 생략된 경우
 `type` 은 `custom` 으로 가정합니다.
 
@@ -607,25 +600,24 @@ Returns `Object`:
   * `task` - 특정 인수로 앱을 실행시킬 작업.
   * `separator` - 표준 `Tasks` 카테고리에서 항목을 구분할 수 있습니다.
   * `file` - 점프 목록을 만든 앱을 사용하여 파일을 열 파일 링크. 이것이
-    동작하려면 그 파일 형식을 앱이 처리할 수 있게 등록되있어야 한다. (하지만,
+    동작하려면 그 파일 형식을 앱이 처리할 수 있게 등록되있어야 합니다. (하지만,
     그것이 기본 처리기일 필요는 없습니다.).
 * `path` String - 파일을 열기 위한 경로. `type` 이 `file` 경우에만 설정되어야
-  한다.
+  합니다.
 * `program` String - 실행하기 위한 프로그램의 경로. 일반적으로 현재 프로그램을
   열기 위해 `process.execPath` 를 지정해야 합니다.
 * `args` String - `program` 이 실행됐을 때의 커맨드 라인 인수. `type` 이
-  `task` 일 경우만 설정되어야 한다.
+  `task` 일 경우만 설정되어야 합니다.
 * `title` String - 점프 목록에서 항목에 표시될 글자. `type` 이 `task` 일 경우만
-  설정되어야 한다.
-* `description` String - 작업의 설명 (툴팁으로 표시된다). `type` 이 `task` 일
-  경우만 설정되어야 한다.
-* `iconPath` String - The absolute path to an icon to be displayed in a
-  Jump List, which can be an arbitrary resource file that contains an icon
-  (e.g. `.ico`, `.exe`, `.dll`). You can usually specify `process.execPath` to
-  show the program icon.
+  설정되어야 합니다.
+* `description` String - 작업의 설명 (툴팁으로 표시됨). `type` 이 `task` 일
+  경우만 설정되어야 합니다.
+* `iconPath` String - 점프 목록에서 보여질 아이콘의 절대 경로. 아이콘을 포함하는
+  임의의 자원 파일 경로일 수 있습니다. (예. `.ico`, `.exe`, `.dll`). 일반적으로
+  프로그램 아이콘을 보여주기 위해 `process.execPath` 를 명시할 수 있습니다.
 * `iconIndex` Integer - 리소스 파일의 아이콘 인덱스. 리소스 파일이 여러 아이콘을
   포함하고 있다면 이 작업을 위해 표시되어야 할 아이콘의 0 기준 인덱스를 명시할
-  수 있다. 리소스 파일이 하나의 아이콘만 가지고 있다면 이 속성은 0 이어야 한다.
+  수 있다. 리소스 파일이 하나의 아이콘만 가지고 있다면 이 속성은 0 이어야 합니다.
 
 사용자 점프 목록을 생성하는 간단한 예제 입니다:
 
@@ -645,15 +637,21 @@ app.setJumpList([
     name: 'Tools',
     items: [
       {
-        type: 'task', title: 'Tool A',
-        program: process.execPath, args: '--run-tool-a',
-        icon: process.execPath, iconIndex: 0,
+        type: 'task',
+        title: 'Tool A',
+        program: process.execPath,
+        args: '--run-tool-a',
+        icon: process.execPath,
+        iconIndex: 0,
         description: 'Runs Tool A'
       },
       {
-        type: 'task', title: 'Tool B',
-        program: process.execPath, args: '--run-tool-b',
-        icon: process.execPath, iconIndex: 0,
+        type: 'task',
+        title: 'Tool B',
+        program: process.execPath,
+        args: '--run-tool-b',
+        icon: process.execPath,
+        iconIndex: 0,
         description: 'Runs Tool B'
       }
     ]
@@ -662,14 +660,18 @@ app.setJumpList([
   { // has no name and no type so `type` is assumed to be "tasks"
     items: [
       {
-        type: 'task', title: 'New Project',
-        program: process.execPath, args: '--new-project',
+        type: 'task',
+        title: 'New Project',
+        program: process.execPath,
+        args: '--new-project',
         description: 'Create a new project.'
       },
       { type: 'separator' },
       {
-        type: 'task', title: 'Recover Project',
-        program: process.execPath, args: '--recover-project',
+        type: 'task',
+        title: 'Recover Project',
+        program: process.execPath,
+        args: '--recover-project',
         description: 'Recover Project'
       }
     ]
@@ -680,6 +682,8 @@ app.setJumpList([
 ### `app.makeSingleInstance(callback)`
 
 * `callback` Function
+  * `argv` String[] - 두번째 인스턴스의 명령줄 인수의 배열
+  * `workingDirectory` String - 두번째 인스턴스의 작업 디렉토리
 
 현재 애플리케이션을 단일 인스턴스 애플리케이션으로 만들어줍니다. 이 메서드는
 애플리케이션이 여러 번 실행됐을 때 다중 인스턴스가 생성되는 대신 한 개의 주
@@ -812,8 +816,7 @@ Returns `Object`:
   열려있었는지 여부. 이는 앱이 마지막으로 종료되었던 때에 열려있었던 윈도우를
   복원하는 것을 표시합니다. 이 설정은 macOS에서만 지원됩니다.
 
-**참고:** 이 API 는 [MAS 빌드](docs/tutorial/mac-app-store-submission-guide.md)
-에 영향을 주지 않습니다.
+**참고:** 이 API 는 [MAS 빌드][mas-builds]에 영향을 주지 않습니다.
 
 ### `app.setLoginItemSettings(settings)` _macOS_ _Windows_
 
@@ -828,8 +831,7 @@ Returns `Object`:
 
 앱의 로그인 항목 설정을 지정합니다.
 
-**참고:** 이 API 는 [MAS 빌드](docs/tutorial/mac-app-store-submission-guide.md)
-에 영향을 주지 않습니다.
+**참고:** 이 API 는 [MAS 빌드][mas-builds]에 영향을 주지 않습니다.
 
 ### `app.isAccessibilitySupportEnabled()` _macOS_ _Windows_
 
@@ -837,6 +839,18 @@ Returns `Boolean` - Chrome의 접근성 지원이 활성화되어있으면 `true
 않다면 `false`를 반환합니다. 이 API는 사용할 수 있는 스크린 리더와 같은 접근성
 기술이 감지되었을 때 `true`를 반환합니다. 자세한 내용은
 https://www.chromium.org/developers/design-documents/accessibility 를 참고하세요.
+
+### `app.setAboutPanelOptions(options)` _macOS_
+
+* `options` Object
+  * `applicationName` String (optional) - 앱 이름.
+  * `applicationVersion` String (optional) - 앱 버전.
+  * `copyright` String (optional) - 저작권 정보.
+  * `credits` String (optional) - 크레딧 정보.
+  * `version` String (optional) - 앱 빌드 버전 숫자.
+
+정보 패널의 옵션을 설정합니다. 앱의 `.plist` 에 정의된 값보다 우선합니다. 자세한
+내용은 [애플 문서][about-panel-options]를 참조하세요.
 
 ### `app.commandLine.appendSwitch(switch[, value])`
 
@@ -925,4 +939,6 @@ dock 아이콘의 `image`를 설정합니다.
 [handoff]: https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/Handoff/HandoffFundamentals/HandoffFundamentals.html
 [activity-type]: https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSUserActivity_Class/index.html#//apple_ref/occ/instp/NSUserActivity/activityType
 [unity-requiremnt]: ../tutorial/desktop-environment-integration.md#unity-launcher-shortcuts-linux
+[mas-builds]: docs/tutorial/mac-app-store-submission-guide.md
 [JumpListBeginListMSDN]: https://msdn.microsoft.com/en-us/library/windows/desktop/dd378398(v=vs.85).aspx
+[about-panel-options]: https://developer.apple.com/reference/appkit/nsapplication/1428479-orderfrontstandardaboutpanelwith?language=objc

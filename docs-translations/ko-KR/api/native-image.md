@@ -2,6 +2,8 @@
 
 > PNG 또는 JPG 파일을 사용하여 트레이, 독, 애플리케이션 아이콘을 생성합니다.
 
+프로세스: [메인](../tutorial/quick-start.md#main-process), [렌더러](../tutorial/quick-start.md#renderer-process)
+
 Electron은 파일 경로 또는 `NativeImage` 인스턴스를 통해 이미지를 사용할 수 있는 API를
 가지고 있습니다. `null`을 전달할 경우 빈 이미지가 생성됩니다.
 
@@ -117,7 +119,7 @@ Returns `NativeImage`
 
 `path`로부터 이미지를 로드하여 새로운 `NativeImage` 인스턴스를 만듭니다.
 `path` 가 존재하지 않거나, 읽을 수 없거나, 유효한 이미지가 아니면 빈 이미지를
-반환한다.
+반환합니다.
 
 ```javascript
 const nativeImage = require('electron').nativeImage
@@ -142,7 +144,9 @@ Returns `NativeImage`
 
 ## Class: NativeImage
 
-네이티브로 랩핑된 트레이, dock, 애플리케이션 아이콘을 위한 이미지입니다.
+> 네이티브로 랩핑된 트레이, dock, 애플리케이션 아이콘을 위한 이미지입니다.
+
+프로세스: [메인](../tutorial/quick-start.md#main-process), [렌더러](../tutorial/quick-start.md#renderer-process)
 
 ### Instance Methods
 

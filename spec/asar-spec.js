@@ -99,6 +99,15 @@ describe('asar package', function () {
         })
       })
 
+      it('reads from a empty file with encoding', function (done) {
+        var p = path.join(fixtures, 'asar', 'empty.asar', 'file1')
+        fs.readFile(p, 'utf8', function (err, content) {
+          assert.equal(err, null)
+          assert.equal(content, '')
+          done()
+        })
+      })
+
       it('reads a linked file', function (done) {
         var p = path.join(fixtures, 'asar', 'a.asar', 'link1')
         fs.readFile(p, function (err, content) {
@@ -753,10 +762,50 @@ describe('asar package', function () {
         assert.equal(process.noAsar, false)
       })
     })
+
+    describe('process.env.ELECTRON_NO_ASAR', function () {
+      it('disables asar support in forked processes', function (done) {
+        const forked = ChildProcess.fork(path.join(__dirname, 'fixtures', 'module', 'no-asar.js'), [], {
+          env: {
+            ELECTRON_NO_ASAR: true
+          }
+        })
+        forked.on('message', function (stats) {
+          assert.equal(stats.isFile, true)
+          assert.equal(stats.size, 778)
+          done()
+        })
+      })
+
+      it('disables asar support in spawned processes', function (done) {
+        const spawned = ChildProcess.spawn(process.execPath, [path.join(__dirname, 'fixtures', 'module', 'no-asar.js')], {
+          env: {
+            ELECTRON_NO_ASAR: true,
+            ELECTRON_RUN_AS_NODE: true
+          }
+        })
+
+        let output = ''
+        spawned.stdout.on('data', function (data) {
+          output += data
+        })
+        spawned.stdout.on('close', function () {
+          const stats = JSON.parse(output)
+          assert.equal(stats.isFile, true)
+          assert.equal(stats.size, 778)
+          done()
+        })
+      })
+    })
   })
 
   describe('asar protocol', function () {
     var url = require('url')
+    var w = null
+
+    afterEach(function () {
+      return closeWindow(w).then(function () { w = null })
+    })
 
     it('can request a file in package', function (done) {
       var p = path.resolve(fixtures, 'asar', 'a.asar', 'file1')
@@ -804,10 +853,9 @@ describe('asar package', function () {
     it('sets __dirname correctly', function (done) {
       after(function () {
         ipcMain.removeAllListeners('dirname')
-        return closeWindow(w).then(function () { w = null })
       })
 
-      var w = new BrowserWindow({
+      w = new BrowserWindow({
         show: false,
         width: 400,
         height: 400
@@ -828,10 +876,9 @@ describe('asar package', function () {
     it('loads script tag in html', function (done) {
       after(function () {
         ipcMain.removeAllListeners('ping')
-        return closeWindow(w).then(function () { w = null })
       })
 
-      var w = new BrowserWindow({
+      w = new BrowserWindow({
         show: false,
         width: 400,
         height: 400
@@ -850,14 +897,13 @@ describe('asar package', function () {
     })
 
     it('loads video tag in html', function (done) {
-      this.timeout(20000)
+      this.timeout(60000)
 
       after(function () {
         ipcMain.removeAllListeners('asar-video')
-        return closeWindow(w).then(function () { w = null })
       })
 
-      var w = new BrowserWindow({
+      w = new BrowserWindow({
         show: false,
         width: 400,
         height: 400

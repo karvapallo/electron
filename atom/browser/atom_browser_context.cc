@@ -10,10 +10,11 @@
 #include "atom/browser/atom_download_manager_delegate.h"
 #include "atom/browser/atom_permission_manager.h"
 #include "atom/browser/browser.h"
+#include "atom/browser/net/about_protocol_handler.h"
 #include "atom/browser/net/asar/asar_protocol_handler.h"
 #include "atom/browser/net/atom_cert_verifier.h"
+#include "atom/browser/net/atom_ct_delegate.h"
 #include "atom/browser/net/atom_network_delegate.h"
-#include "atom/browser/net/atom_ssl_config_service.h"
 #include "atom/browser/net/atom_url_request_job_factory.h"
 #include "atom/browser/net/http_protocol_handler.h"
 #include "atom/browser/web_view_manager.h"
@@ -67,10 +68,11 @@ std::string RemoveWhitespace(const std::string& str) {
 
 }  // namespace
 
-AtomBrowserContext::AtomBrowserContext(
-    const std::string& partition, bool in_memory,
-    const base::DictionaryValue& options)
+AtomBrowserContext::AtomBrowserContext(const std::string& partition,
+                                       bool in_memory,
+                                       const base::DictionaryValue& options)
     : brightray::BrowserContext(partition, in_memory),
+      ct_delegate_(new AtomCTDelegate),
       network_delegate_(new AtomNetworkDelegate),
       cookie_delegate_(new AtomCookieDelegate) {
   // Construct user agent string.
@@ -128,6 +130,8 @@ AtomBrowserContext::CreateURLRequestJobFactory(
   }
   protocol_handlers->clear();
 
+  job_factory->SetProtocolHandler(url::kAboutScheme,
+                                  base::WrapUnique(new AboutProtocolHandler));
   job_factory->SetProtocolHandler(
       url::kDataScheme, base::WrapUnique(new net::DataProtocolHandler));
   job_factory->SetProtocolHandler(
@@ -151,8 +155,7 @@ AtomBrowserContext::CreateURLRequestJobFactory(
       url_request_context_getter()->GetURLRequestContext()->host_resolver();
   job_factory->SetProtocolHandler(
       url::kFtpScheme,
-      base::WrapUnique(new net::FtpProtocolHandler(
-          new net::FtpNetworkLayer(host_resolver))));
+      net::FtpProtocolHandler::Create(host_resolver));
 
   return std::move(job_factory);
 }
@@ -190,11 +193,7 @@ content::PermissionManager* AtomBrowserContext::GetPermissionManager() {
 }
 
 std::unique_ptr<net::CertVerifier> AtomBrowserContext::CreateCertVerifier() {
-  return base::WrapUnique(new AtomCertVerifier);
-}
-
-net::SSLConfigService* AtomBrowserContext::CreateSSLConfigService() {
-  return new AtomSSLConfigService;
+  return base::WrapUnique(new AtomCertVerifier(ct_delegate_.get()));
 }
 
 std::vector<std::string> AtomBrowserContext::GetCookieableSchemes() {
@@ -203,6 +202,11 @@ std::vector<std::string> AtomBrowserContext::GetCookieableSchemes() {
   default_schemes.insert(default_schemes.end(),
                          standard_schemes.begin(), standard_schemes.end());
   return default_schemes;
+}
+
+net::TransportSecurityState::RequireCTDelegate*
+AtomBrowserContext::GetRequireCTDelegate() {
+  return ct_delegate_.get();
 }
 
 void AtomBrowserContext::RegisterPrefs(PrefRegistrySimple* pref_registry) {

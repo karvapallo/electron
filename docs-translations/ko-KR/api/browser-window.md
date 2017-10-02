@@ -2,6 +2,8 @@
 
 > 브라우저 윈도우를 생성하고 제어합니다.
 
+프로세스: [메인](../tutorial/quick-start.md#main-process)
+
 ```javascript
 // 메인 프로세스에서
 const {BrowserWindow} = require('electron')
@@ -84,7 +86,8 @@ top.show()
 
 ### 모달 윈도우
 
-모달 윈도우는 부모 윈도우를 비활성화 시키는 자식 윈도우입니다. 모달 윈도우를 만드려면 `parent`, `modal` 옵션을 동시에 설정해야 합니다:
+모달 윈도우는 부모 윈도우를 비활성화 시키는 자식 윈도우입니다. 모달 윈도우를 만드려면
+`parent`, `modal` 옵션을 동시에 설정해야 합니다:
 
 ```javascript
 const {BrowserWindow} = require('electron')
@@ -98,7 +101,8 @@ child.once('ready-to-show', () => {
 
 ### 플랫폼별 특이사항
 
-* macOS 에서 부모창이 이동할 때 자식창은 부모창과의 상대적 위치를 유지합니다. 윈도우즈와 리눅스는 자식창이 움직이지 않습니다.
+* macOS 에서 부모창이 이동할 때 자식창은 부모창과의 상대적 위치를 유지합니다. 윈도우즈와
+  리눅스는 자식창이 움직이지 않습니다.
 * 윈도우즈에서 parent 를 동적으로 변경할 수 없습니다.
 * 리눅스에서 모달창의 타입이 `dialog`로 변경됩니다.
 * 리눅스에서 많은 데스크톱 환경이 모달창 숨김을 지원하지 않습니다.
@@ -116,50 +120,50 @@ child.once('ready-to-show', () => {
 
 * `width` Integer - 윈도우의 가로 너비. 기본값은 `800`입니다.
 * `height` Integer - 윈도우의 세로 높이. 기본값은 `600`입니다.
-* `x` Integer (**required** y가 사용되면) - 화면을 기준으로 창 좌측을 오프셋 한 위치.
-  기본값은 `화면중앙`입니다.
-* `y` Integer (**required** x가 사용되면) - 화면을 기준으로 창 상단을 오프셋 한 위치.
-  기본값은 `화면중앙`입니다.
+* `x` Integer (**required** y가 사용되면) - 화면을 기준으로 창 좌측을 오프셋 한
+  위치. 기본값은 `화면중앙`입니다.
+* `y` Integer (**required** x가 사용되면) - 화면을 기준으로 창 상단을 오프셋 한
+  위치. 기본값은 `화면중앙`입니다.
 * `useContentSize` Boolean - `width`와 `height`를 웹 페이지의 크기로 사용합니다.
-  이 속성을 사용하면 웹 페이지의 크기에 윈도우 프레임 크기가 추가되므로 실제 창은 조금
-  더 커질 수 있습니다. 기본값은 `false`입니다.
+  이 속성을 사용하면 웹 페이지의 크기에 윈도우 프레임 크기가 추가되므로 실제
+  창은 조금 더 커질 수 있습니다. 기본값은 `false`입니다.
 * `center` Boolean - 윈도우를 화면 정 중앙에 위치시킵니다.
 * `minWidth` Integer - 윈도우의 최소 가로 너비. 기본값은 `0`입니다.
 * `minHeight` Integer - 윈도우의 최소 세로 높이. 기본값은 `0`입니다.
 * `maxWidth` Integer - 윈도우의 최대 가로 너비. 기본값은 `제한없음`입니다.
 * `maxHeight` Integer - 윈도우의 최대 세로 높이. 기본값은 `제한없음`입니다.
-* `resizable` Boolean - 윈도우의 크기를 재조정 할 수 있는지 여부. 기본값은 `true`
-  입니다.
+* `resizable` Boolean - 윈도우의 크기를 재조정 할 수 있는지 여부. 기본값은
+  `true` 입니다.
 * `movable` Boolean - 윈도우를 이동시킬 수 있는지 여부. Linux에선 구현되어있지
   않습니다. 기본값은 `true` 입니다.
-* `minimizable` Boolean - 윈도우를 최소화시킬 수 있는지 여부. Linux에선 구현되어있지
+* `minimizable` Boolean - 윈도우를 최소화시킬 수 있는지 여부. Linux에선
+  구현되어있지 않습니다. 기본값은 `true` 입니다.
+* `maximizable` Boolean - 윈도우를 최대화시킬 수 있는지 여부. Linux에선
+  구현되어있지 않습니다. 기본값은 `true` 입니다.
+* `closable` Boolean - 윈도우를 닫을 수 있는지 여부. Linux에선 구현되어있지
   않습니다. 기본값은 `true` 입니다.
-* `maximizable` Boolean - 윈도우를 최대화시킬 수 있는지 여부. Linux에선 구현되어있지
-  않습니다. 기본값은 `true` 입니다.
-* `closable` Boolean - 윈도우를 닫을 수 있는지 여부. Linux에선 구현되어있지 않습니다.
-  기본값은 `true` 입니다.
 * `focusable` Boolean - 윈도우가 포커스될 수 있는지 여부입니다. 기본값은
   `true`입니다. Windows에선 `focusable: false`를 설정함으로써 암시적으로
   `skipTaskbar: true`도 설정됩니다. Linux에선 `focusable: false`를 설정함으로써
-  윈도우가 wm과 함께 반응을 중지하며 모든 작업 영역에서 윈도우가 언제나 최상단에 있게
-  됩니다.
+  윈도우가 wm과 함께 반응을 중지하며 모든 작업 영역에서 윈도우가 언제나 최상단에
+  있게 됩니다.
 * `alwaysOnTop` Boolean - 윈도우이 언제나 다른 창들 위에 유지되는지 여부.
   기본값은 `false`입니다.
 * `fullscreen` Boolean - 윈도우의 전체화면 활성화 여부. 이 속성을 명시적으로
-  `false`로 지정했을 경우, macOS에선 전체화면 버튼이 숨겨지거나 비활성됩니다. 기본값은
-  `false` 입니다.
-* `fullscreenable` Boolean - 윈도우가 전체화면 모드로 전환될 수 있는지 여부입니다.
-  또한 macOS에선, 최대화/줌 버튼이 전체화면 모드 또는 윈도우 최대화를 실행할지 여부도
-  포함됩니다. 기본값은 `true`입니다.
-* `skipTaskbar` Boolean - 작업표시줄 애플리케이션 아이콘 표시 스킵 여부. 기본값은
-  `false`입니다.
+  `false`로 지정했을 경우, macOS에선 전체화면 버튼이 숨겨지거나 비활성됩니다.
+  기본값은 `false` 입니다.
+* `fullscreenable` Boolean - 윈도우가 전체화면 모드로 전환될 수 있는지
+  여부입니다. 또한 macOS에선, 최대화/줌 버튼이 전체화면 모드 또는 윈도우
+  최대화를 실행할지 여부도 포함됩니다. 기본값은 `true`입니다.
+* `skipTaskbar` Boolean - 작업표시줄 애플리케이션 아이콘 표시 스킵 여부.
+  기본값은 `false`입니다.
 * `kiosk` Boolean - Kiosk(키오스크) 모드. 기본값은 `false`입니다.
 * `title` String - 기본 윈도우 제목. 기본값은 `"Electron"`입니다.
 * `icon` [NativeImage](native-image.md) - 윈도우 아이콘, 생략하면 실행 파일의
   아이콘이 대신 사용됩니다.
 * `icon` [NativeImage](native-image.md) - 윈도우 아이콘. Windows에선 가장 좋은
-  시각적 효과를 얻기 위해 `ICO`를 사용하는 것을 권장하며, 또한 undefined로 남겨두면
-  실행 파일의 아이콘이 대신 사용됩니다.
+  시각적 효과를 얻기 위해 `ICO`를 사용하는 것을 권장하며, 또한 undefined로
+  남겨두면 실행 파일의 아이콘이 대신 사용됩니다.
 On Windows it is
   recommended to use `ICO` icons to get best visual effects, you can also
   leave it undefined so the executable's icon will be used.
@@ -167,14 +171,15 @@ On Windows it is
 * `frame` Boolean - `false`로 지정하면 창을 [Frameless Window](frameless-window.md)
   형태로 생성합니다. 기본값은 `true`입니다.
 * `parent` BrowserWindow - 부모 윈도우를 설정합니다. 기본 값은 `null`입니다.
-* `modal` Boolean - 이 윈도우가 모달 윈도우인지 여부를 설정합니다. 이 옵션은 자식
-  윈도우에서만 작동합니다. 기본값은 `false`입니다.
+* `modal` Boolean - 이 윈도우가 모달 윈도우인지 여부를 설정합니다. 이 옵션은
+  자식 윈도우에서만 작동합니다. 기본값은 `false`입니다.
 * `acceptFirstMouse` Boolean - 윈도우가 비활성화 상태일 때 내부 콘텐츠 클릭 시
-  활성화 되는 동시에 단일 mouse-down 이벤트를 발생시킬지 여부. 기본값은 `false`입니다.
-* `disableAutoHideCursor` Boolean - 타이핑중 자동으로 커서를 숨길지 여부. 기본값은
-  `false`입니다.
-* `autoHideMenuBar` Boolean - `Alt`를 누르지 않는 한 애플리케이션 메뉴바를 숨길지
-  여부. 기본값은 `false`입니다.
+  활성화 되는 동시에 단일 mouse-down 이벤트를 발생시킬지 여부. 기본값은 `false`
+  입니다.
+* `disableAutoHideCursor` Boolean - 타이핑중 자동으로 커서를 숨길지 여부.
+  기본값은 `false`입니다.
+* `autoHideMenuBar` Boolean - `Alt`를 누르지 않는 한 애플리케이션 메뉴바를
+  숨길지 여부. 기본값은 `false`입니다.
 * `enableLargerThanScreen` Boolean - 윈도우 크기가 화면 크기보다 크게 재조정 될
   수 있는지 여부. 기본값은 `false`입니다.
 * `backgroundColor` String - `#66CD00` 와 `#FFF`, `#80FFFFFF` (알파 지원됨) 같이
@@ -187,19 +192,86 @@ On Windows it is
   `false`입니다.
 * `type` String - 특정 플랫폼에만 적용되는 윈도우의 종류를 지정합니다. 기본값은
   일반 윈도우 입니다. 사용할 수 있는 창의 종류는 아래를 참고하세요.
-* `standardWindow` Boolean - macOS의 표준 윈도우를 텍스쳐 윈도우 대신 사용합니다.
-  기본 값은 `true`입니다.
-* `titleBarStyle` String, macOS - 윈도우 타이틀 바 스타일을 지정합니다. 자세한 사항은
-  아래를 참고하세요.
-* `thickFrame` Boolean - Windows에서 테두리 없는 윈도우를 위해 표준 윈도우 프레임을
-  추가하는 `WS_THICKFRAME` 스타일을 사용합니다. `false`로 지정하면 윈도우의 그림자와
-  애니메이션을 삭제합니다. 기본값은 `true`입니다.
-* `webPreferences` Object - 웹 페이지 기능을 설정합니다. 사용할 수 있는 속성은
-  아래를 참고하세요.
+* `standardWindow` Boolean - macOS의 표준 윈도우를 텍스쳐 윈도우 대신
+  사용합니다. 기본 값은 `true`입니다.
+* `titleBarStyle` String, macOS - 윈도우 타이틀 바 스타일을 지정합니다. 기본값은
+  `default` 입니다. 가능한 값은 다음과 같습니다:
+  * `default` - 표준 Mac 회색 불투명 스타일을 사용합니다.
+  * `hidden` - 타이틀 바를 숨기고 콘텐츠 전체를 윈도우 크기에 맞춥니다.
+    타이틀 바는 없어지지만 표준 창 컨트롤 ("신호등 버튼")은 왼쪽 상단에
+    유지됩니다.
+  * `hidden-inset` - `hidden` 타이틀 바 속성과 함께 신호등 버튼이 윈도우
+    모서리로부터 약간 더 안쪽으로 들어가도록합니다. 10.9 Mavericks에선 지원되지
+    않고 `hidden`으로 폴백합니다.
+* `thickFrame` Boolean - Windows에서 테두리 없는 윈도우를 위해 표준 윈도우
+  프레임을 추가하는 `WS_THICKFRAME` 스타일을 사용합니다. `false`로 지정하면
+  윈도우의 그림자와 애니메이션을 삭제합니다. 기본값은 `true`입니다.
+* `webPreferences` Object - 웹 페이지 기능을 설정합니다.
+  * `nodeIntegration` Boolean - node(node.js) 통합 여부. 기본값은 `true`입니다.
+  * `preload` String - 스크립트를 지정하면 페이지 내의 다른 스크립트가 작동하기
+    전에 로드됩니다. 여기서 지정한 스크립트는 node 통합 활성화 여부에 상관없이
+    언제나 모든 node API에 접근할 수 있습니다. 이 속성의 스크립트 경로는 절대
+    경로로 지정해야 합니다. node 통합이 비활성화되어있을 경우, 미리 로드되는
+    스크립트는 node의 전역 심볼들을 다시 전역 범위로 다시 포함 시킬 수 있습니다.
+    [여기](process.md#event-loaded)의 예시를 참고하세요.
+  * `session` [Session](session.md#class-session) - 페이지에서 사용할 세션을
+    지정합니다. Session 객체를 직접적으로 전달하는 대신, 파티션 문자열을 받는
+    `partition` 옵션을 사용할 수도 있습니다. `session`과 `partition`이 같이
+    제공되었을 경우 `session`이 사용됩니다. 기본값은 기본 세션입니다.
+    * `partition` String - 페이지에서 사용할 세션을 지정합니다. 만약 `partition`
+      이 `persist:`로 시작하면 페이지는 지속성 세션을 사용하며 다른 모든 앱 내의
+      페이지에서 같은 `partition`을 사용할 수 있습니다. 만약 `persist:` 접두어로
+      시작하지 않으면 페이지는 인-메모리 세션을 사용합니다. 여러 페이지에서 같은
+      `partition`을 지정하면 같은 세션을 공유할 수 있습니다. `partition`을
+      지정하지 않으면 애플리케이션의 기본 세션이 사용됩니다.
+  * `zoomFactor` Number - 페이지의 기본 줌 값을 지정합니다. 예를 들어 `300%`를
+    표현하려면 `3.0`으로 지정합니다. 기본값은 `1.0`입니다.
+  * `javascript` Boolean - 자바스크립트를 활성화합니다. 기본값은 `false`입니다.
+  * `webSecurity` Boolean - `false`로 지정하면 same-origin 정책을 비활성화
+    합니다. (이 속성은 보통 사람들에 의해 웹 사이트를 테스트할 때 사용합니다)
+    그리고`allowRunningInsecureContent` 두
+    속성을 사용자가 `true`로 지정되지 않은 경우 `true`로 지정합니다. 기본값은
+    `true`입니다.
+  * `allowRunningInsecureContent` Boolean - https 페이지에서 http URL에서 로드한
+    JavaScript와 CSS 또는 플러그인을 실행시킬 수 있도록 허용합니다. 기본값은
+    `false`입니다.
+  * `images` Boolean - 이미지 지원을 활성화합니다. 기본값은 `true`입니다.
+  * `textAreasAreResizable` Boolean - HTML TextArea 요소의 크기를 재조정을
+    허용합니다. 기본값은 `true`입니다.
+  * `webgl` Boolean - WebGL 지원을 활성화합니다. 기본값은 `true`입니다.
+  * `webaudio` Boolean - WebAudio 지원을 활성화합니다. 기본값은 `true`입니다.
+  * `plugins` Boolean - 플러그인 활성화 여부를 지정합니다. 기본값은 `false`입니다.
+  * `experimentalFeatures` Boolean - Chrome의 실험적인 기능을 활성화합니다.
+    기본값은 `false`입니다.
+  * `experimentalCanvasFeatures` Boolean - Chrome의 실험적인 캔버스(canvas)
+    기능을 활성화합니다. 기본값은 `false`입니다.
+  * `scrollBounce` Boolean - macOS에서 스크롤 튕기기 효과 (탄성 밴딩)를 활성화
+    합니다. 기본값은 `false`입니다.
+  * `blinkFeatures` String - 활성화 할 `CSSVariables,KeyboardEventKey`같이 `,`로
+    구분된 기능 문자열들의 리스트입니다. [RuntimeEnabledFeatures.json5][blink-feature-string]
+    파일에서 찾을 수 있습니다.
+  * `disableBlinkFeatures` String - 비활성화 할 `CSSVariables,KeyboardEventKey`같이
+    `,`로 구분된 기능 문자열들의 리스트입니다. [RuntimeEnabledFeatures.json5][blink-feature-string]
+    파일에서 찾을 수 있습니다.
+  * `defaultFontFamily` Object - font-family의 기본 폰트를 지정합니다.
+    * `standard` String - 기본값 `Times New Roman`.
+    * `serif` String - 기본값 `Times New Roman`.
+    * `sansSerif` String - 기본값 `Arial`.
+    * `monospace` String - 기본값 `Courier New`.
+  * `defaultFontSize` Integer - 기본값 `16`.
+  * `defaultMonospaceFontSize` Integer - 기본값 `13`.
+  * `minimumFontSize` Integer - 기본값 `0`.
+  * `defaultEncoding` String - 기본값 `ISO-8859-1`.
+  * `backgroundThrottling` Boolean - 페이지가 백그라운드 상태에 진입할 때
+    애니메이션과 타이머에 스로틀을 적용할지 여부입니다. 기본값은 `true`입니다.
+  * `offscreen` Boolean - 브라우저 윈도우에 오프 스크린 랜더링을 적용할지 여부를
+    지정합니다. 기본값은 `false`입니다.
+  * `sandbox` Boolean - Chromium 운영체제 수준의 샌드박스 활성화 여부.
 
-`minWidth`/`maxWidth`/`minHeight`/`maxHeight`를 통해 최소 또는 최대 윈도우 크기를
-지정한 경우, 이는 사용자만을 제약하며, `setBounds`/`setSize` 또는 `BrowserWindow`의
-생성자에서 크기 제약을 따르지 않는 윈도우 크기를 전달하는 것은 막을 수 없습니다.
+`minWidth`/`maxWidth`/`minHeight`/`maxHeight`를 통해 최소 또는 최대 윈도우
+크기를 지정한 경우, 이는 사용자만을 제약하며, `setBounds`/`setSize` 또는
+`BrowserWindow`의 생성자에서 크기 제약을 따르지 않는 윈도우 크기를 전달하는 것은
+막을 수 없습니다.
 
 `type` 속성에서 사용할 수 있는 값과 동작은 다음과 같으며, 플랫폼에 따라 다릅니다:
 
@@ -209,85 +281,10 @@ On Windows it is
   * `textured`는 창에 메탈 그라디언트 외관(`NSTexturedBackgroundWindowMask`)을
     설정합니다.
   * `desktop`은 데스크탑 배경 레벨(`kCGDesktopWindowLevel - 1`)에 윈도우를
-    배치합니다. 참고로 이렇게 만들어진 윈도우는 포커스, 키보드, 마우스 이벤트를 받을
-    수 없습니다. 하지만 편법으로 `globalShortcut`을 통해 키 입력을 받을 수 있습니다.
+    배치합니다. 참고로 이렇게 만들어진 윈도우는 포커스, 키보드, 마우스 이벤트를
+    받을 수 없습니다. 하지만 편법으로 `globalShortcut`을 통해 키 입력을 받을 수
+    있습니다.
 * Windows의 경우, 가능한 타입으론 `toolbar`가 있습니다.
-
-`titleBarStyle`의 속성은 다음과 같습니다:
-
-* `default` 또는 미지정: 표준 Mac 회색 불투명 스타일을 사용합니다.
-* `hidden`: 타이틀 바를 숨기고 콘텐츠 전체를 윈도우 크기에 맞춥니다.
-  타이틀 바는 없어지지만 표준 창 컨트롤 ("신호등 버튼")은 왼쪽 상단에 유지됩니다.
-* `hidden-inset`: `hidden` 타이틀 바 속성과 함께 신호등 버튼이 윈도우 모서리로부터
-  약간 더 안쪽으로 들어가도록합니다. 10.9 Mavericks에선 지원되지 않고 `hidden`으로
-  폴백합니다.
-
-`webPreferences` 속성은 다음과 같은 속성을 가질 수 있습니다:
-
-* `nodeIntegration` Boolean - node(node.js) 통합 여부. 기본값은 `true`입니다.
-* `preload` String - 스크립트를 지정하면 페이지 내의 다른 스크립트가 작동하기 전에
-  로드됩니다. 여기서 지정한 스크립트는 node 통합 활성화 여부에 상관없이 언제나 모든
-  node API에 접근할 수 있습니다. 이 속성의 스크립트 경로는 절대 경로로 지정해야
-  합니다. node 통합이 비활성화되어있을 경우, preload 스크립트는 node의 global
-  심볼들을 다시 global 스코프로 다시 포함 시킬 수 있습니다.
-  [여기](process.md#event-loaded)의 예시를 참고하세요.
-* `session` [Session](session.md#class-session) - 페이지에서 사용할 세션을
-  지정합니다. Session 객체를 직접적으로 전달하는 대신, 파티션 문자열을 받는
-  `partition` 옵션을 사용할 수도 있습니다. `session`과 `partition`이 같이
-  제공되었을 경우 `session`이 사용됩니다. 기본값은 기본 세션입니다.
-  * `partition` String - 페이지에서 사용할 세션을 지정합니다. 만약 `partition`이
-    `persist:`로 시작하면 페이지는 지속성 세션을 사용하며 다른 모든 앱 내의
-    페이지에서 같은 `partition`을 사용할 수 있습니다. 만약 `persist:` 접두어로
-    시작하지 않으면 페이지는 인-메모리 세션을 사용합니다. 여러 페이지에서 같은
-    `partition`을 지정하면 같은 세션을 공유할 수 있습니다. `partition`을 지정하지
-    않으면 애플리케이션의 기본 세션이 사용됩니다.
-* `zoomFactor` Number - 페이지의 기본 줌 값을 지정합니다. 예를 들어 `300%`를
-  표현하려면 `3.0`으로 지정합니다. 기본값은 `1.0`입니다.
-* `javascript` Boolean - 자바스크립트를 활성화합니다. 기본값은 `false`입니다.
-* `webSecurity` Boolean - `false`로 지정하면 same-origin 정책을 비활성화합니다.
-  (이 속성은 보통 사람들에 의해 웹 사이트를 테스트할 때 사용합니다) 그리고
-  `allowDisplayingInsecureContent`와 `allowRunningInsecureContent` 두 속성을
-  사용자가 `true`로 지정되지 않은 경우 `true`로 지정합니다. 기본값은
-  `true`입니다.
-* `allowDisplayingInsecureContent` Boolean - https 페이지에서 http URL에서
-  로드한 이미지 같은 리소스를 표시할 수 있도록 허용합니다. 기본값은 `false`입니다.
-* `allowRunningInsecureContent` Boolean - https 페이지에서 http URL에서 로드한
-  JavaScript와 CSS 또는 플러그인을 실행시킬 수 있도록 허용합니다. 기본값은
-  `false`입니다.
-* `images` Boolean - 이미지 지원을 활성화합니다. 기본값은 `true`입니다.
-* `textAreasAreResizable` Boolean - HTML TextArea 요소의 크기를 재조정을
-  허용합니다. 기본값은 `true`입니다.
-* `webgl` Boolean - WebGL 지원을 활성화합니다. 기본값은 `true`입니다.
-* `webaudio` Boolean - WebAudio 지원을 활성화합니다. 기본값은 `true`입니다.
-* `plugins` Boolean - 플러그인 활성화 여부를 지정합니다. 기본값은 `false`입니다.
-* `experimentalFeatures` Boolean - Chrome의 실험적인 기능을 활성화합니다.
-  기본값은 `false`입니다.
-* `experimentalCanvasFeatures` Boolean - Chrome의 실험적인 캔버스(canvas) 기능을
-  활성화합니다. 기본값은 `false`입니다.
-* `directWrite` Boolean - Windows에서 폰트 렌더링을 위해 DirectWrite를
-  사용하는지를 지정합니다. 기본값은 `true`입니다.
-* `scrollBounce` Boolean - macOS에서 스크롤 튕기기 효과 (탄성 밴딩)를 활성화 합니다.
-  기본값은 `false`입니다.
-* `blinkFeatures` String - 활성화 할 `CSSVariables,KeyboardEventKey`같이 `,`로
-  구분된 기능 문자열들의 리스트입니다. [RuntimeEnabledFeatures.in][blink-feature-string]
-  파일에서 찾을 수 있습니다.
-* `disableBlinkFeatures` String - 비활성화 할 `CSSVariables,KeyboardEventKey`같이
-  `,`로 구분된 기능 문자열들의 리스트입니다. [RuntimeEnabledFeatures.in][blink-feature-string]
-  파일에서 찾을 수 있습니다.
-* `defaultFontFamily` Object - font-family의 기본 폰트를 지정합니다.
-  * `standard` String - 기본값 `Times New Roman`.
-  * `serif` String - 기본값 `Times New Roman`.
-  * `sansSerif` String - 기본값 `Arial`.
-  * `monospace` String - 기본값 `Courier New`.
-* `defaultFontSize` Integer - 기본값 `16`.
-* `defaultMonospaceFontSize` Integer - 기본값 `13`.
-* `minimumFontSize` Integer - 기본값 `0`.
-* `defaultEncoding` String - 기본값 `ISO-8859-1`.
-* `backgroundThrottling` Boolean - 페이지가 백그라운드 상태에 진입할 때 애니메이션과
-  타이머에 스로틀을 적용할지 여부입니다. 기본값은 `true`입니다.
-* `offscreen` Boolean - 브라우저 윈도우에 오프 스크린 랜더링을 적용할지 여부를
-  지정합니다. 기본값은 `false`입니다.
-* `sandbox` Boolean - Chromium 운영체제 수준의 샌드박스 활성화 여부.
 
 ### Instance Events
 
@@ -652,34 +649,38 @@ Returns `Boolean` - 윈도우가 전체화면 모드인지 여부.
 크기는 관여하지 않습니다. 그저 전체 콘텐츠 뷰 내에 있는 모든 엑스트라 너비, 높이 영역이
 합해집니다.
 
-#### `win.setBounds(options[, animate])`
+#### `win.previewFile(path[, displayName])` _macOS_
 
-* `options` Object
+* `path` String - QuickLook 으로 미리 볼 파일에 대한 절대 경로. Quick Look 이
+  열기 위한 파일의 컨텐츠 형식을 결정하는데 경로의 파일명과 확장자를 사용하기
+ 때문에 중요합니다.
+* `displayName` String (Optional) - Quick Look 모달 뷰에 표시되는 파일의 이름.
+  이것은 순전히 보여주는 용도이며 파일의 컨텐츠 형식에 영향을 주지 않습니다.
+  기본값은 `path` 입니다.
 
-  * `x` Integer
-  * `y` Integer
-  * `width` Integer
-  * `height` Integer
+주어진 경로의 파일을 미리 보여주기 위해 [Quick Look][quick-look] 을 사용하세요.
 
+#### `win.setBounds(bounds[, animate])`
+
+* `bounds` [Rectangle](structures/rectangle.md)
 * `animate` Boolean (optional) _macOS_
 
-윈도우를 지정한 `width`, `height`, `x`, `y`로 크기 재조정 및 이동합니다.
+윈도우를 주어진 영역으로 크기 재조정 및 이동합니다.
 
 #### `win.getBounds()`
 
-Returns `Object`:
-* `width` Integer
-* `height` Integer
-* `x` Integer
-* `y` Integer
+Returns [`Rectangle`](structures/rectangle.md)
+
+#### `win.setContentBounds(bounds[, animate])`
+
+* `bounds` [Rectangle](structures/rectangle.md)
+* `animate` Boolean (optional) _macOS_
+
+윈도우의 내부 영역 (예. 웹페이지) 을 주어진 영역으로 크기 재조정 및 이동합니다.
 
 #### `win.getContentBounds()`
 
-Returns `Object`:
-* `width` Integer
-* `height` Integer
-* `x` Integer
-* `y` Integer
+* `bounds` [`Rectangle`](structures/rectangle.md)
 
 윈도우의 클라이언트 영역 (웹 페이지)의 너비, 높이, x, y 값을 포함하는 객체를
 반환합니다.
@@ -944,12 +945,9 @@ Returns `Boolean` - 윈도우의 문서가 변경되었는지 여부.
 
 #### `win.capturePage([rect, ]callback)`
 
-* `rect` Object (optional) - 캡쳐될 페이지의 영역
-  * `x` Integer
-  * `y` Integer
-  * `width` Integer
-  * `height` Integer
+* `rect` [Rectangle](structures/rectangle.md) (optional) - 캡쳐될 페이지의 영역
 * `callback` Function
+  * `image` [NativeImage](native-image.md)
 
 `webContents.capturePage([rect, ]callback)`와 같습니다.
 
@@ -1036,7 +1034,9 @@ Windows와 Linux에선 항상 `true`를 반환합니다.
 
 #### `win.setThumbarButtons(buttons)` _Windows_
 
-* `buttons` - Array
+* `buttons` [ThumbarButton[]](structures/thumbar-button.md)
+
+Returns `Boolean` - 버튼이 성공적으로 추가되었는지 여부
 
 윈도우 작업표시줄 버튼 레이아웃의 미리보기 이미지 영역에 미리보기 툴바와 버튼 세트를
 추가합니다. 반환되는 `Boolean` 값은 미리보기 툴바가 성공적으로 추가됬는지를 알려줍니다.
@@ -1052,8 +1052,8 @@ Windows와 Linux에선 항상 `true`를 반환합니다.
   * `icon` [NativeImage](native-image.md) - 미리보기 툴바에 보여질 아이콘.
   * `click` Function
   * `tooltip` String (optional) - 버튼의 툴팁 텍스트.
-  * `flags` String[] (optional) - 버튼의 특정 동작 및 상태 제어. 기본적으로 `enabled`이
-    사용됩니다.
+  * `flags` String[] (optional) - 버튼의 특정 동작 및 상태 제어. 기본적으로
+    `enabled`이 사용됩니다.
 
 `flags` 는 다음 `String` 들을 포함할 수 있는 배열입니다:
 * `enabled` - 사용자가 사용할 수 있도록 버튼이 활성화 됩니다.
@@ -1069,11 +1069,7 @@ Windows와 Linux에선 항상 `true`를 반환합니다.
 
 #### `win.setThumbnailClip(region)` _Windows_
 
-* `region` Object - Region of the window
-  * `x` Integer - 영역의 x 위치
-  * `y` Integer - 영역의 y 위치
-  * `width` Integer - 영역의 너비
-  * `height` Integer - 영역의 높이
+* `region` [Rectangle](structures/rectangle.md) - 윈도우의 영역
 
 작업 표시줄에 윈도우의 섬네일이 표시될 때 섬네일 이미지로 사용할 윈도우의 영역을
 지정합니다. 빈 영역을 지정하는 것으로 전체 윈도우의 섬네일로 초기화할 수 있습니다:
@@ -1109,7 +1105,7 @@ Windows와 Linux에선 항상 `true`를 반환합니다.
 
 Returns `Boolean` - 메뉴 막대 자동 숨김 상태 여부.
 
-#### `win.setMenuBarVisibility(visible)`
+#### `win.setMenuBarVisibility(visible)` _Windows_ _Linux_
 
 * `visible` Boolean
 
@@ -1176,5 +1172,6 @@ Returns `BrowserWindow` - 부모 윈도우.
 
 Returns `BrowserWindow[]` - 모든 자식 윈도우.
 
-[blink-feature-string]: https://cs.chromium.org/chromium/src/third_party/WebKit/Source/platform/RuntimeEnabledFeatures.in
+[blink-feature-string]: https://cs.chromium.org/chromium/src/third_party/WebKit/Source/platform/RuntimeEnabledFeatures.json5?l=62
 [window-levels]: https://developer.apple.com/reference/appkit/nswindow/1664726-window_levels
+[quick-look]: https://en.wikipedia.org/wiki/Quick_Look

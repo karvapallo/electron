@@ -2,6 +2,8 @@
 
 > 아이콘과 컨텍스트 메뉴를 시스템 알림 영역에 추가합니다.
 
+프로세스: [메인](../tutorial/quick-start.md#main-process)
+
 ```javascript
 const {app, Menu, Tray} = require('electron')
 
@@ -61,11 +63,7 @@ appIcon.setContextMenu(contextMenu)
   * `shiftKey` Boolean
   * `ctrlKey` Boolean
   * `metaKey` Boolean
-* `bounds` Object _macOS_ _Windows_ - 트레이 아이콘의 범위
-  * `x` Integer
-  * `y` Integer
-  * `width` Integer
-  * `height` Integer
+* `bounds` [Rectangle](structures/rectangle.md) - 트레이 아이콘의 범위
 
 트레이 아이콘이 클릭될 때 발생하는 이벤트입니다.
 
@@ -76,11 +74,7 @@ appIcon.setContextMenu(contextMenu)
   * `shiftKey` Boolean
   * `ctrlKey` Boolean
   * `metaKey` Boolean
-* `bounds` Object - 트레이 아이콘의 범위
-  * `x` Integer
-  * `y` Integer
-  * `width` Integer
-  * `height` Integer
+* `bounds` [Rectangle](structures/rectangle.md) - 트레이 아이콘의 범위
 
 트레이 아이콘을 오른쪽 클릭될 때 호출 됩니다.
 
@@ -91,11 +85,7 @@ appIcon.setContextMenu(contextMenu)
   * `shiftKey` Boolean
   * `ctrlKey` Boolean
   * `metaKey` Boolean
-* `bounds` Object - 트레이 아이콘의 범위
-  * `x` Integer
-  * `y` Integer
-  * `width` Integer
-  * `height` Integer
+* `bounds` [Rectangle](structures/rectangle.md) - 트레이 아이콘의 범위
 
 트레이 아이콘이 더블 클릭될 때 발생하는 이벤트입니다.
 
@@ -232,16 +222,12 @@ win.on('hide', () => {
 
 #### `tray.getBounds()` _macOS_ _Windows_
 
-Returns `Object`:
-* `x` Integer
-* `y` Integer
-* `width` Integer
-* `height` Integer
+Returns [`Rectangle`](structures/rectangle.md)
 
 이 트레이 아이콘의 `Object` 형식의 `bounds`.
 
 #### `tray.isDestroyed()`
 
-Returns `Boolean` - 트레이 아이콘이 파괴되었는지 여부.
+Returns `Boolean` - 트레이 아이콘이 소멸되었는지 여부.
 
-[event-emitter]: http://nodejs.org/api/events.html#events_class_events_eventemitter
+[event-emitter]: https://nodejs.org/api/events.html#events_class_eventemitter

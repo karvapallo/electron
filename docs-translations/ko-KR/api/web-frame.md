@@ -2,6 +2,8 @@
 
 > 현재 웹 페이지의 렌더링 상태를 커스터마이즈합니다.
 
+프로세스: [렌더러](../tutorial/quick-start.md#renderer-process)
+
 다음 예시는 현재 페이지를 200% 줌 합니다:
 
 ```javascript
@@ -81,12 +83,26 @@ webFrame.setSpellCheckProvider('en-US', true, {
 
 현재 페이지 콘텐츠의 보안 정책에 상관없이 `scheme`로부터 리소스가 로드됩니다.
 
-### `webFrame.registerURLSchemeAsPrivileged(scheme)`
+### `webFrame.registerURLSchemeAsPrivileged(scheme[, options])`
 
- * `scheme` String
+* `scheme` String
+* `options` Object(optional)
+  * `secure` Boolean - (optional) 기본값 참.
+  * `bypassCSP` Boolean - (optional) 기본값 참.
+  * `allowServiceWorkers` Boolean - (optional) 기본값 참.
+  * `supportFetchAPI` Boolean - (optional) 기본값 참.
+  * `corsEnabled` Boolean - (optional) 기본값 참.
 
 `scheme`를 보안된 스킴으로 등록합니다. 리소스에 대해 보안 정책을 우회하며,
 ServiceWorker의 등록과 fetch API를 사용할 수 있도록 지원합니다.
+
+등록에서 그것을 빼려면 `false` 값으로 옵션을 지정하세요.
+콘텐츠 보안 정책을 우회하지 않고, 특권 스킴을 등록하는 예:
+
+```javascript
+const {webFrame} = require('electron')
+webFrame.registerURLSchemeAsPrivileged('foo', { bypassCSP: false })
+```
 
 ### `webFrame.insertText(text)`
 
@@ -107,41 +123,12 @@ ServiceWorker의 등록과 fetch API를 사용할 수 있도록 지원합니다.
 ### `webFrame.getResourceUsage()`
 
 Returns `Object`:
-* `images` Object
-  * `count` Integer
-  * `size` Integer
-  * `liveSize` Integer
-  * `decodedSize` Integer
-  * `purgedSize` Integer
-  * `purgeableSize` Integer
-* `cssStyleSheets` Object
-  * `count` Integer
-  * `size` Integer
-  * `liveSize` Integer
-  * `decodedSize` Integer
-  * `purgedSize` Integer
-  * `purgeableSize` Integer
-* `xslStyleSheets` Object
-  * `count` Integer
-  * `size` Integer
-  * `liveSize` Integer
-  * `decodedSize` Integer
-  * `purgedSize` Integer
-  * `purgeableSize` Integer
-* `fonts` Object
-  * `count` Integer
-  * `size` Integer
-  * `liveSize` Integer
-  * `decodedSize` Integer
-  * `purgedSize` Integer
-  * `purgeableSize` Integer
-* `other` Object
-  * `count` Integer
-  * `size` Integer
-  * `liveSize` Integer
-  * `decodedSize` Integer
-  * `purgedSize` Integer
-  * `purgeableSize` Integer
+
+* `images` [MemoryUsageDetails](structures/memory-usage-details.md)
+* `cssStyleSheets` [MemoryUsageDetails](structures/memory-usage-details.md)
+* `xslStyleSheets` [MemoryUsageDetails](structures/memory-usage-details.md)
+* `fonts` [MemoryUsageDetails](structures/memory-usage-details.md)
+* `other` [MemoryUsageDetails](structures/memory-usage-details.md)
 
 Blink의 내부 메모리 캐시 사용 정보를 담고있는 객체를 반환합니다.
 
@@ -157,15 +144,12 @@ console.log(webFrame.getResourceUsage())
   images: {
     count: 22,
     size: 2549,
-    liveSize: 2542,
-    decodedSize: 478,
-    purgedSize: 0,
-    purgeableSize: 0
+    liveSize: 2542
   },
   cssStyleSheets: { /* same with "images" */ },
   xslStyleSheets: { /* same with "images" */ },
   fonts: { /* same with "images" */ },
-  other: { /* same with "images" */ },
+  other: { /* same with "images" */ }
 }
 ```
 

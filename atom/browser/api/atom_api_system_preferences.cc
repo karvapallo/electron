@@ -8,6 +8,7 @@
 #include "atom/common/native_mate_converters/value_converter.h"
 #include "atom/common/node_includes.h"
 #include "native_mate/dictionary.h"
+#include "ui/gfx/color_utils.h"
 
 namespace atom {
 
@@ -15,12 +16,15 @@ namespace api {
 
 SystemPreferences::SystemPreferences(v8::Isolate* isolate) {
   Init(isolate);
-  #if defined(OS_WIN)
+#if defined(OS_WIN)
   InitializeWindow();
-  #endif
+#endif
 }
 
 SystemPreferences::~SystemPreferences() {
+#if defined(OS_WIN)
+  Browser::Get()->RemoveObserver(this);
+#endif
 }
 
 #if !defined(OS_MACOSX)
@@ -28,6 +32,10 @@ bool SystemPreferences::IsDarkMode() {
   return false;
 }
 #endif
+
+bool SystemPreferences::IsInvertedColorScheme() {
+  return color_utils::IsInvertedColorScheme();
+}
 
 // static
 mate::Handle<SystemPreferences> SystemPreferences::Create(
@@ -43,6 +51,7 @@ void SystemPreferences::BuildPrototype(
 #if defined(OS_WIN)
       .SetMethod("getAccentColor", &SystemPreferences::GetAccentColor)
       .SetMethod("isAeroGlassEnabled", &SystemPreferences::IsAeroGlassEnabled)
+      .SetMethod("getColor", &SystemPreferences::GetColor)
 #elif defined(OS_MACOSX)
       .SetMethod("postNotification",
                  &SystemPreferences::PostNotification)
@@ -57,9 +66,12 @@ void SystemPreferences::BuildPrototype(
       .SetMethod("unsubscribeLocalNotification",
                  &SystemPreferences::UnsubscribeLocalNotification)
       .SetMethod("getUserDefault", &SystemPreferences::GetUserDefault)
+      .SetMethod("setUserDefault", &SystemPreferences::SetUserDefault)
       .SetMethod("isSwipeTrackingFromScrollEventsEnabled",
                  &SystemPreferences::IsSwipeTrackingFromScrollEventsEnabled)
 #endif
+      .SetMethod("isInvertedColorScheme",
+                 &SystemPreferences::IsInvertedColorScheme)
       .SetMethod("isDarkMode", &SystemPreferences::IsDarkMode);
 }
 

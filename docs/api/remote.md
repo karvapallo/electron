@@ -2,6 +2,8 @@
 
 > Use main process modules from the renderer process.
 
+Process: [Renderer](../glossary.md#renderer-process)
+
 The `remote` module provides a simple way to do inter-process communication
 (IPC) between the renderer process (web page) and the main process.
 
@@ -20,7 +22,7 @@ win.loadURL('https://github.com')
 ```
 
 **Note:** For the reverse (access the renderer process from the main process),
-you can use [webContents.executeJavascript](web-contents.md#webcontentsexecutejavascriptcode-usergesture-callback).
+you can use [webContents.executeJavascript](web-contents.md#contentsexecutejavascriptcode-usergesture-callback).
 
 ## Remote Objects
 
@@ -138,16 +140,46 @@ The `remote` module has the following methods:
 
 * `module` String
 
-Returns `Object` - The object returned by `require(module)` in the main process.
+Returns `any` - The object returned by `require(module)` in the main process.
+Modules specified by their relative path will resolve relative to the entrypoint
+of the main process.
+
+e.g.
+
+```
+project/
+├── main
+│   ├── foo.js
+│   └── index.js
+├── package.json
+└── renderer
+    └── index.js
+```
+
+```js
+// main process: main/index.js
+const {app} = require('electron')
+app.on('ready', () => { /* ... */ })
+```
+
+```js
+// some relative module: main/foo.js
+module.exports = 'bar'
+```
+
+```js
+// renderer process: renderer/index.js
+const foo = require('electron').remote.require('./foo') // bar
+```
 
 ### `remote.getCurrentWindow()`
 
-Returns `BrowserWindow` - The [`BrowserWindow`](browser-window.md) object to which this web page
+Returns [`BrowserWindow`](browser-window.md) - The window to which this web page
 belongs.
 
 ### `remote.getCurrentWebContents()`
 
-Returns `WebContents` - The [`WebContents`](web-contents.md) object of this web page.
+Returns [`WebContents`](web-contents.md) - The web contents of this web page.
 
 ### `remote.getGlobal(name)`
 

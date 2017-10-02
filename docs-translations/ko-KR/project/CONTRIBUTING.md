@@ -4,7 +4,7 @@
 
 이 프로젝트는 기여자 규약인 [행동강령](CODE_OF_CONDUCT.md)을 준수합니다. 따라서 이
 프로젝트의 개발에 참여하려면 이 규약을 지켜야 합니다. 받아들일 수 없는 행위를 발견했을
-경우 atom@github.com로 보고하세요.
+경우 electron@github.com로 보고하세요.
 
 다음 항목들은 Electron에 기여하는 가이드라인을 제시합니다.
 참고로 이 항목들은 그저 가이드라인에 불과하며 규칙이 아닙니다. 따라서 스스로의 적절한
@@ -75,6 +75,6 @@
   * :green_heart: `:green_heart:` CI 빌드를 고쳤을 때
   * :white_check_mark: `:white_check_mark:` 테스트를 추가했을 때
   * :lock: `:lock:` 보안 문제를 해결했을 때
-  * :arrow_up: `:arrow_up:` 종속성 라이브러리를 업데이트 했을 때
-  * :arrow_down: `:arrow_down:` 종속성 라이브러리를 다운그레이드 했을 때
+  * :arrow_up: `:arrow_up:` 의존성 라이브러리를 업데이트 했을 때
+  * :arrow_down: `:arrow_down:` 의존성 라이브러리를 다운그레이드 했을 때
   * :shirt: `:shirt:` linter(코드 검사기)의 경고를 제거했을 때

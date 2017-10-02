@@ -2,6 +2,8 @@
 
 > 파일과 URL을 각 기본 애플리케이션을 통해 관리합니다.
 
+프로세스: [메인](../tutorial/quick-start.md#main-process), [렌더러](../tutorial/quick-start.md#renderer-process)
+
 `shell` 모듈은 데스크톱 환경 통합에 관련한 유틸리티를 제공하는 모듈입니다.
 
 다음 예시는 설정된 URL을 유저의 기본 브라우저로 엽니다:
@@ -67,19 +69,7 @@ Returns `Boolean` - 아이템이 성공적으로 휴지통으로 이동되었는
   * `update` - 이미 존재하는 바로가기의 특정한 속성을 갱신합니다.
   * `replace` - 이미 존재하는 바로가기를 덮어씁니다. 바로가기가 존재하지 않으면
     실패합니다.
-* `options` Object
-  * `target` String - 이 바로가기로부터 실행될 대상입니다.
-  * `cwd` String (optional) - 작업 디렉토리입니다. 기본값은 없습니다.
-  * `args` String (optional) - 이 바로가기로부터 실행될 때 `target`에 적용될 인수
-    값입니다. 기본값은 없습니다.
-  * `description` String (optional) - 바로가기의 설명입니다. 기본값은 없습니다.
-  * `icon` String (optional) - 아이콘의 경로입니다. DLL 또는 EXE가 될 수 있습니다.
-    `icon`과 `iconIndex`는 항상 같이 설정되어야 합니다. 기본값은 없으며 `target`의
-    아이콘을 사용합니다.
-  * `iconIndex` Integer (optional) - `icon`이 DLL 또는 EXE일 때 사용되는 아이콘의
-    리소스 ID이며 기본값은 0입니다.
-  * `appUserModelId` String (optional) - 애플리케이션 사용자 모델 ID입니다.
-    기본값은 없습니다.
+* `options` [ShortcutDetails](structures/shortcut-details.md)
 
 Returns `Boolean` - 바로가기 생성 여부.
 
@@ -89,19 +79,7 @@ Returns `Boolean` - 바로가기 생성 여부.
 
 * `shortcutPath` String
 
-Returns `Object`:
-* `target` String - 바로가기로 실행할 대상.
-* `cwd` String (optional) - 작업 디렉토리. 기본값은 빈 문자열.
-* `args` String (optional) - 바로가기로 실행할 때 `target` 에 적용될 인수.
-  기본값은 빈 문자열.
-* `description` String (optional) - 바로가기의 설명. 기본값은 빈 문자열.
-* `icon` String (optional) - 아이콘의 경로. DLL 이나 EXE 일 수 있다. `icon` 과
-  `iconIndex` 는 함께 설정해야 한다. 기본값은 빈 문자열이며, 타겟의 아이콘을
-  사용한다.
-* `iconIndex` Integer (optional) - `icon` 이 DLL 이나 EXE 일 경우 아이콘의
-  리소스 ID. 기본값은 0.
-* `appUserModelId` String (optional) - 애플리케이션 사용자 모델 ID. 기본값은 빈
-  문자열.
+Returns [`ShortcutDetails`](structures/shortcut-details.md)
 
 Resolves the shortcut link at `shortcutPath`.
 `shortcutPath`에 위치한 바로가기 링크를 해석합니다. `shell.writeShortcutLink`
